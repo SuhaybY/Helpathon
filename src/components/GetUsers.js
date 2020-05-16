@@ -1,6 +1,6 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import firestore from "./Firestore.js";
-import User from './users.js';
+import User from './user.js';
 
 export default function GetUsers() {
     //Connect to the db
@@ -13,9 +13,9 @@ export default function GetUsers() {
         const getRealtimeUpdates = docRef.onSnapshot({includeMetadataChanges: true}, querySnapshot => {
             const allUsers = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
             setUsers(allUsers);
+            console.log("Refreshed info from Firestore database! All users:")
             console.log(allUsers);
         });
-        console.log("Refreshed info from Firestore database!");
         return () => {
             getRealtimeUpdates();
         }
