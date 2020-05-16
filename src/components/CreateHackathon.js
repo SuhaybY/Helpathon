@@ -1,7 +1,6 @@
 import React, { useState, useRef } from 'react';
-import firestore from "./Firestore.js";
-import Hackathon from "./hackathon.js";
-import User from './user.js'
+import { useHistory } from "react-router-dom";
+import Hackathon from "./hackathon";
 
 export default function CreateHackathon() {
     const [email, setEmail] = useState();
@@ -13,24 +12,20 @@ export default function CreateHackathon() {
     const [budget, setBudget] = useState();
 
     const hackID = useRef();
+    let history = useHistory();
 
     const submitForm = async (e) => {
         e.preventDefault();
         let hackathon = new Hackathon(email, password, name, new Date(start), new Date(end), location, parseInt(budget));
         await hackathon.postToDB();
         hackID.current = hackathon.id;
-        console.log("Created a new hackathon: " + hackathon.id);
-    }
-
-    const testSubmission = () => {
-        let user = new User("test@test.com" + Math.random(), "pass@123", "Cool Name");
-        user.postToDB();
-        user.apply(hackID.current);
-        console.log("Testing submission... Applied to hackathon: " + hackID.current);
+        console.log("Created a new hackathon: " + hackathon.id + ". Redirecting to hackathon management page");
+        history.push("/hackathon/" + hackID.current);
     }
 
     return (
         <form onSubmit={submitForm}>
+            <div>Hackathon Create</div>
             <input
                 type="text"
                 name="name"
@@ -74,7 +69,6 @@ export default function CreateHackathon() {
                 onChange={e => setBudget(e.target.value)}
             />
             <button type="submit">Submit</button>
-            <button type="button" onClick={testSubmission}>Test</button>
         </form>
     );
 }

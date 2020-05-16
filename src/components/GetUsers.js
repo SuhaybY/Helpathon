@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import firestore from "./Firestore.js";
-import User from './user.js';
 
 export default function GetUsers() {
     //Connect to the db
