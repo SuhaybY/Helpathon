@@ -1,7 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { GetUsers, InsertUser } from './components';
+import { GetUsers, InsertUser, Qr } from './components';
 
 function App() {
   return (

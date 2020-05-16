@@ -2,5 +2,6 @@
 
 import InsertUser from './InsertUser';
 import GetUsers from './GetUsers';
+import Qr from './Qr';
 
-export { InsertUser, GetUsers };
+export { InsertUser, GetUsers, Qr };

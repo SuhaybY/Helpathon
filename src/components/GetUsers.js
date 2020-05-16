@@ -4,7 +4,7 @@ import firestore from "./Firestore.js";
 export default function User() {
     //Connect to the db
     const db = firestore.firestore();
-    const docRef = db.collection("users");
+    const docRef = db.collection("testQR");
     const [users, setUsers] = useState([]);
 
     useEffect(() => {
@@ -21,7 +21,7 @@ export default function User() {
 
     const deleteUser = (id) => {
         console.log('Going to delete: ' + id);
-        db.collection('users').doc(id).delete();
+        db.collection('testQR').doc(id).delete();
     };
 
     return (
@@ -34,6 +34,7 @@ export default function User() {
                 <div>Email: {user.email}</div>
                 {/* The following is just to check that the returned type is securely hashed */}
                 <div>Password: {user.password}</div>
+                <div>QR-id: {user.QRID}</div>
             </div>
             <button onClick={() => deleteUser(user.id)}>Delete User</button>
             </li>

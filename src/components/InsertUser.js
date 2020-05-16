@@ -1,18 +1,22 @@
 import React, {useState} from 'react';
 import firestore from "./Firestore.js";
+import { useQrEncode, useQrDecode } from 'react-qr-hooks';
 
 export default function User() {
     const [username, setUsername] = useState();
     const [fullname, setFullName] = useState();
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
+    const [encoded, setEncoded] = useState();
+
 
     const submitForm = (e) => {
         e.preventDefault();
         //Connect to the db
         const db = firestore.firestore();
         //Query the db
-        const userRef = db.collection("users").add({
+        const userRef = db.collection("testQR").add({
+            QRID: fullname,
             username: username,
             fullname: fullname,
             email: email,
@@ -22,7 +26,11 @@ export default function User() {
         console.log("Submitted to the db!");
     }
 
+    const encode = useQrEncode(encoded);
+    const decoded = useQrDecode(encode);
+
     return (
+        <div>
         <form onSubmit={submitForm}>
             <input
             type="text"
@@ -48,7 +56,12 @@ export default function User() {
             placeholder="Password"
             onChange={e => setPassword(e.target.value)}
             />
-            <button type="submit">Submit</button>
+            <button type="submit" onClick={() => setEncoded(username)}>Submit</button>
         </form>
+        <div>
+            <img src={encode} alt="My QR code" />
+             <p>{decoded}</p>
+        </div>
+        </div>
     );
 }
