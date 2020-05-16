@@ -10,7 +10,7 @@ export default function AllHackathons() {
     let history = useHistory();
 
     useEffect(() => {
-        const getRealtimeUpdates = docRef.onSnapshot({includeMetadataChanges: true}, querySnapshot => {
+        const getRealtimeUpdates = docRef.onSnapshot({ includeMetadataChanges: true }, querySnapshot => {
             const allHackathons = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
             setHackathons(allHackathons);
             console.log("Refreshed info from Firestore database! All users:")
@@ -22,7 +22,7 @@ export default function AllHackathons() {
     }, []);
 
     const viewHackathon = (hackID) => {
-        history.push("/hackathon/hackID");
+        history.push("/hackathon/" + hackID);
     };
 
     const createHackathon = () => {
@@ -30,7 +30,7 @@ export default function AllHackathons() {
     };
 
     const joinHackathon = (hackID) => {
-        history.push("/applicant/hackID");
+        history.push("/applicant/" + hackID);
     };
 
     return (
@@ -38,15 +38,15 @@ export default function AllHackathons() {
             <button onClick={() => createHackathon()}>Create Hackathon</button>
             <ul>
                 {hackathons.map(hackathon => (
-                <li key={hackathon.id}>
-                <div>
-                    <div>Name: {hackathon.name}</div>
-                    <div>Email: {hackathon.email}</div>
-                    <div>Location: {hackathon.location}</div>
-                </div>
-                <button onClick={() => viewHackathon(hackathon.id)}>View</button>
-                <button onClick={() => joinHackathon(hackathon.id)}>Register</button>
-                </li>
+                    <li key={hackathon.id}>
+                        <div>
+                            <div>Name: {hackathon.name}</div>
+                            <div>Email: {hackathon.email}</div>
+                            <div>Location: {hackathon.location}</div>
+                        </div>
+                        <button onClick={() => viewHackathon(hackathon.id)}>View</button>
+                        <button onClick={() => joinHackathon(hackathon.id)}>Register</button>
+                    </li>
                 ))}
             </ul>
         </div>
