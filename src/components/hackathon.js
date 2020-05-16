@@ -11,14 +11,13 @@ export default class Hackathon {
         this.prizes = [];
         this.applications = {};
         this.budget = budget;
-        this.id = this.postToDB();
-        console.log(this);
+        this.id = null;
     }
 
-    postToDB() {
+    async postToDB() {
         const db = firestore.firestore();
         //Query the db
-        const userRef = db.collection("hackathons").add({
+        const userRef = await db.collection("hackathons").add({
             email: this.email,
             name: this.name,
             start: this.start,
@@ -29,11 +28,9 @@ export default class Hackathon {
             applications: this.applications
         });
         //Reset user info(?)
+        this.id = userRef.id;
         console.log("Submitted to the db!");
         return userRef;
     }
 
 }
-
-
-// module.exports.default({ Hackathon });

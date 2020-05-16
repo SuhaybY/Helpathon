@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import firestore from "./Firestore.js";
 import Hackathon from "./hackathon.js";
+import User from './user.js'
 
 export default function CreateHackathon() {
     const [email, setEmail] = useState();
@@ -11,9 +12,20 @@ export default function CreateHackathon() {
     const [location, setLocation] = useState();
     const [budget, setBudget] = useState();
 
-    const submitForm = (e) => {
+    const hackID = useRef();
+
+    const submitForm = async(e) => {
         e.preventDefault();
         let hackathon = new Hackathon(email, password, name, new Date(start), new Date(end), location, parseInt(budget));
+        await hackathon.postToDB();
+        hackID.current = hackathon.id;
+        console.log("Created a new hackathon: " + hackathon.id);
+    }
+
+    const testSubmission = () => {
+        console.log("Testing...");
+        let user = new User("test@test.com", "pass@123", "Cool Name");
+        user.apply(hackID.current);
     }
 
     return (
@@ -61,6 +73,7 @@ export default function CreateHackathon() {
                 onChange={e => setBudget(e.target.value)}
             />
             <button type="submit">Submit</button>
+            <button type="button" onClick={testSubmission}>Test</button>
         </form>
     );
 }

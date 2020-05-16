@@ -5,7 +5,7 @@ export default class User {
     constructor(email, password, name) {
         this.email = email;
         this.password = password;
-        this.name = name;
+        this.fullname = name;
         this.id = this.postToDB();
         console.log(this);
     }
@@ -15,7 +15,7 @@ export default class User {
         //Query the db
         const userRef = await db.collection("users").add({
             email: this.email,
-            name: this.name,
+            fullname: this.fullname,
         });
         //Reset user info(?)
         console.log("Submitted to the db!");
@@ -24,6 +24,7 @@ export default class User {
 
     apply(hackathonID) {
         const db = firestore.firestore();
+        console.log("Hack ID: " + hackathonID);
         let hackathon = db.collection('hackathons').doc(hackathonID).get().then(doc => {
             if (!doc.exists) {
                 console.log('No such document!');
@@ -43,6 +44,3 @@ export default class User {
         });
     }
 }
-
-
-// module.exports.default({ Hackathon });
