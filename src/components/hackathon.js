@@ -9,7 +9,7 @@ export default class Hackathon {
         this.end = end;
         this.location = location;
         this.prizes = [];
-        this.applications = {};
+        this.applications = [];
         this.budget = budget;
         this.id = null;
     }
@@ -17,7 +17,7 @@ export default class Hackathon {
     async postToDB() {
         const db = firestore.firestore();
         //Query the db
-        const userRef = await db.collection("hackathons").add({
+        const hackRef = await db.collection("hackathons").add({
             email: this.email,
             name: this.name,
             start: this.start,
@@ -27,10 +27,9 @@ export default class Hackathon {
             location: this.location,
             applications: this.applications
         });
-        //Reset user info(?)
-        this.id = userRef.id;
-        console.log("Submitted to the db!");
-        return userRef;
+        this.id = hackRef.id;
+        console.log("New hackathon: " + this.id + ". Submitted to the db!");
+        return hackRef;
     }
 
 }

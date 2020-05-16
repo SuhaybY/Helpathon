@@ -23,9 +23,10 @@ export default function CreateHackathon() {
     }
 
     const testSubmission = () => {
-        console.log("Testing...");
-        let user = new User("test@test.com", "pass@123", "Cool Name");
+        let user = new User("test@test.com" + Math.random(), "pass@123", "Cool Name");
+        user.postToDB();
         user.apply(hackID.current);
+        console.log("Testing submission... Applied to hackathon: " + hackID.current);
     }
 
     return (
