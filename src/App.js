@@ -1,7 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { GetUsers, InsertUser } from './components';
+import { GetUsers, createHackathon } from './components';
 
 function App() {
   return (
@@ -9,7 +9,7 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <GetUsers />
-        <InsertUser />
+        <createHackathon />
       </header>
     </div>
   );
