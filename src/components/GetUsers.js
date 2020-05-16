@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import firestore from "./Firestore.js";
 
 export default function User() {
@@ -9,7 +9,7 @@ export default function User() {
 
     useEffect(() => {
         // const getRealtimeUpdates = () => {
-        const getRealtimeUpdates = docRef.onSnapshot({includeMetadataChanges: true}, querySnapshot => {
+        const getRealtimeUpdates = docRef.onSnapshot({ includeMetadataChanges: true }, querySnapshot => {
             const allBooks = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
             setUsers(allBooks);
         });
@@ -27,16 +27,16 @@ export default function User() {
     return (
         <ul>
             {users.map(user => (
-            <li key={user.id}>
-            <div>
-                <div>Username: {user.username}</div>
-                <div>Full Name: {user.fullname}</div>
-                <div>Email: {user.email}</div>
-                {/* The following is just to check that the returned type is securely hashed */}
-                <div>Password: {user.password}</div>
-            </div>
-            <button onClick={() => deleteUser(user.id)}>Delete User</button>
-            </li>
+                <li key={user.id}>
+                    <div>
+                        <div>Username: {user.username}</div>
+                        <div>Full Name: {user.fullname}</div>
+                        <div>Email: {user.email}</div>
+                        {/* The following is just to check that the returned type is securely hashed */}
+                        <div>Password: {user.password}</div>
+                    </div>
+                    <button onClick={() => deleteUser(user.id)}>Delete User</button>
+                </li>
             ))}
         </ul>
     );
