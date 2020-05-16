@@ -11,9 +11,6 @@ export default function User() {
         e.preventDefault();
         //Connect to the db
         const db = firestore.firestore();
-        db.settings({
-            timestampsInSnapshots: true
-        });
         //Query the db
         const userRef = db.collection("users").add({
             username: username,

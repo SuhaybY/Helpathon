@@ -1,14 +1,15 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import User from './components/User.js'
+import { GetUsers, InsertUser } from './components';
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <User />
+        <GetUsers />
+        <InsertUser />
       </header>
     </div>
   );
