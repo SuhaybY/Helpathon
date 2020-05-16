@@ -23,7 +23,7 @@ export default function CreateHackathon() {
             start: new Date(start),
             end: new Date(end),
             location: location,
-            budget: parseInt(budget)
+            budget: parseInt(budget.replace('$', ''))
         });
         await hackathon.postToDB();
         hackID.current = hackathon.id;
