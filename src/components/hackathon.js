@@ -66,6 +66,7 @@ export default class Hackathon {
         const hackRef = await db.collection("hackathons").add({
             email: this.email,
             name: this.name,
+            password: this.password,
             start: this.start,
             end: this.end,
             budget: this.budget,
