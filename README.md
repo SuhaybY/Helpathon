@@ -1,5 +1,5 @@
-# WeddingPlanner
-Wedding Planner for Ryerson University Hackathon
+# Helpathon
+Hackathon Planner for the Ryerson University Hackathon
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
