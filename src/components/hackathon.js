@@ -9,16 +9,15 @@ export default class Hackathon {
         this.end = end;
         this.location = location;
         this.prizes = [];
-        this.applications = [];
+        this.applications = {};
         this.budget = budget;
-        this.id = this.postToDB();
-        console.log(this);
+        this.id = null;
     }
 
-    postToDB() {
+    async postToDB() {
         const db = firestore.firestore();
         //Query the db
-        const userRef = db.collection("hackathons").add({
+        const userRef = await db.collection("hackathons").add({
             email: this.email,
             name: this.name,
             start: this.start,
@@ -29,24 +28,9 @@ export default class Hackathon {
             applications: this.applications
         });
         //Reset user info(?)
+        this.id = userRef.id;
         console.log("Submitted to the db!");
         return userRef;
     }
 
-    updateApplicant(accept, email) {
-        const db = firestore.firestore();
-        //Query the db
-        var userRef = db.collection("hackathons").doc(this.id);
-        // Atomically add a new region to the "regions" array field.
-        userRef.update({
-            applications: firestore.firestore.FieldValue.arrayUnion("test_add")
-        });
-
-        console.log("Updated applicant: " + email + " in " + this.id);
-        // return userRef;
-    }
-
 }
-
-
-// module.exports.default({ Hackathon });
