@@ -16,7 +16,15 @@ export default function CreateHackathon() {
 
     const submitForm = async (e) => {
         e.preventDefault();
-        let hackathon = new Hackathon(email, password, name, new Date(start), new Date(end), location, parseInt(budget));
+        let hackathon = new Hackathon({
+            email: email,
+            password: password,
+            name: name,
+            start: new Date(start),
+            end: new Date(end),
+            location: location,
+            budget: parseInt(budget.replace('$', ''))
+        });
         await hackathon.postToDB();
         hackID.current = hackathon.id;
         console.log("Created a new hackathon: " + hackathon.id + ". Redirecting to hackathon management page");
