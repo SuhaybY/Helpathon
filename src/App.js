@@ -1,8 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import logo from './logo.svg';
 import './App.css';
-import { HomePage, CreateHackathon, HackathonView } from './components';
+import { HomePage, CreateHackathon, HackathonView, InsertUser, AllHackathons } from './components';
 
 export default function App() {
   return (
@@ -13,7 +12,7 @@ export default function App() {
             <Link to="/">Home</Link>
           </li>
           <li>
-            <Link to="/hackathon">Hackathon</Link>
+            <Link to="/hackathon/all">Hackathon</Link>
           </li>
         </ul>
 
@@ -28,6 +27,14 @@ export default function App() {
 }
 
 const routes = [
+  {
+      path: "/applicant/:hackID",
+      component: InsertUser
+  },
+  {
+      path: "/hackathon/all",
+      component: AllHackathons
+  },
   {
       path: "/hackathon/:hackID",
       component: HackathonView

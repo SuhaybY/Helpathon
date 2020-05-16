@@ -1,6 +1,5 @@
-import React, { useState, useRef } from 'react';
+import React from 'react';
 import {useParams} from "react-router-dom";
-import logo from '../logo.svg';
 import { GetUsers } from './'
 
 export default function ViewHackathon() {

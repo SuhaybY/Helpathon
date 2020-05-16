@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import firestore from "./Firestore.js";
-import Hackathon from "./hackathon.js";
+import User from "./user.js";
 
-export default function User() {
+export default function InsertUser() {
     const [email, setEmail] = useState();
     const [password, setPass] = useState();
     const [name, setName] = useState();
@@ -10,6 +9,7 @@ export default function User() {
     const submitForm = (e) => {
         e.preventDefault();
         let user = new User(email, password, name);
+        user.postToDB();
     }
 
     return (
@@ -24,13 +24,13 @@ export default function User() {
                 type="text"
                 name="start"
                 placeholder="Email"
-                onChange={e => setStart(e.target.value)}
+                onChange={e => setEmail(e.target.value)}
             />
             <input
                 type="text"
                 name="end"
                 placeholder="Password"
-                onChange={e => setEnd(e.target.value)}
+                onChange={e => setPass(e.target.value)}
             />
             <button type="submit">Submit</button>
         </form>
