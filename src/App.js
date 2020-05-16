@@ -10,6 +10,7 @@ function App() {
         <img src={logo} className="App-logo" alt="logo" />
         <GetUsers />
         <InsertUser />
+        <Qr />
       </header>
     </div>
   );

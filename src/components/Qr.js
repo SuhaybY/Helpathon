@@ -1,16 +1,27 @@
 import React, {useState} from 'react';
-import { useQrEncode, useQrDecode } from 'react-qr-hooks';
+import QrReader from "react-qr-reader";
 
 export default function User(){
-    
-  const [users, QRID] = useState([]);
-  const encoded = useQrEncode('User QR');
-  //const decoded = useQrDecode(encoded);
+  const [delay, setdelay] = useState(300);
+  const [result, setResult] = useState("No result");
 
-  return (
-    <div>
-      <img src={encoded} alt="My QR code" />
-    </div>
-  );
+  const handleScan = data => {
+    if (data) {
+      setResult(data);
+    }
+  }
+  const handleError = err => {
+    console.error(err);
+  }
+    return (
+      <div>
+        <QrReader
+          delay={delay}
+          onError={handleError}
+          onScan={handleScan}
+          style={{ width: "100%" }}
+        />
+        <p>{result}</p>
+      </div>
+    );
 }
-
