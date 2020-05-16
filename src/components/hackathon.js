@@ -34,6 +34,3 @@ export default class Hackathon {
     }
 
 }
-
-
-// module.exports.default({ Hackathon });

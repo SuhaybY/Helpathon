@@ -6,6 +6,7 @@ export default class User {
         this.password = password;
         this.name = name;
         this.id = this.postToDB();
+        this.rsvp = false;
         console.log(this);
     }
 
@@ -15,13 +16,10 @@ export default class User {
         const userRef = db.collection("users").add({
             email: this.email,
             name: this.name,
+            rsvp: this.rsvp,
         });
-        //Reset user info(?)
         console.log("Submitted to the db!");
         return userRef;
     }
 
 }
-
-
-// module.exports.default({ Hackathon });
