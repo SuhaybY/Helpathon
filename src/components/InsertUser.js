@@ -28,7 +28,7 @@ export default function User() {
 
     const encode = useQrEncode(encoded);
     const decoded = useQrDecode(encode);
-
+ 
     return (
         <div>
         <form onSubmit={submitForm}>
@@ -59,8 +59,8 @@ export default function User() {
             <button type="submit" onClick={() => setEncoded(username)}>Submit</button>
         </form>
         <div>
-            <img src={encode} alt="My QR code" />
-             <p>{decoded}</p>
+            <img src={encode} />
+           
         </div>
         </div>
     );
