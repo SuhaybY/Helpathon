@@ -1,8 +1,9 @@
 import firestore from "./Firestore.js";
 
-class Hackathon {
-    constructor(id, name, start, end, location, budget) {
-        this.id = id;
+export default class Hackathon {
+    constructor(email, password, name, start, end, location, budget) {
+        this.email = email;
+        this.password = password;
         this.name = name;
         this.start = start;
         this.end = end;
@@ -10,14 +11,15 @@ class Hackathon {
         this.prizes = [];
         this.applications = {};
         this.budget = budget;
-        this.postToDB();
+        this.id = this.postToDB();
+        console.log(this);
     }
 
     postToDB() {
         const db = firestore.firestore();
         //Query the db
         const userRef = db.collection("hackathons").add({
-            userID: this.id,
+            email: this.email,
             name: this.name,
             start: this.start,
             end: this.end,
@@ -28,9 +30,10 @@ class Hackathon {
         });
         //Reset user info(?)
         console.log("Submitted to the db!");
+        return userRef;
     }
 
 }
 
 
-module.exports({ Hackathon });
+// module.exports.default({ Hackathon });

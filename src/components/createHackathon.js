@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import firestore from "./Firestore.js";
 import Hackathon from "./hackathon.js";
 
-export default function createHackathon() {
+export default function CreateHackathon() {
+    const [email, setEmail] = useState();
+    const [password, setPass] = useState();
     const [name, setName] = useState();
     const [start, setStart] = useState();
     const [end, setEnd] = useState();
@@ -10,11 +12,24 @@ export default function createHackathon() {
     const [budget, setBudget] = useState();
 
     const submitForm = (e) => {
-        hackathon = new Hackathon(id, name, new Date(start), new Date(end), location, parseInt(budget));
+        e.preventDefault();
+        let hackathon = new Hackathon(email, password, name, new Date(start), new Date(end), location, parseInt(budget));
     }
 
     return (
         <form onSubmit={submitForm}>
+            <input
+                type="text"
+                name="name"
+                placeholder="Email"
+                onChange={e => setEmail(e.target.value)}
+            />
+            <input
+                type="text"
+                name="name"
+                placeholder="Password"
+                onChange={e => setPass(e.target.value)}
+            />
             <input
                 type="text"
                 name="name"

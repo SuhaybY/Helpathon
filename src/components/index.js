@@ -1,6 +1,5 @@
-'use strict';
-
-import InsertUser from './InsertUser';
+import Hackathon from './hackathon';
 import GetUsers from './GetUsers';
+import CreateHackathon from './CreateHackathon';
 
-export { InsertUser, GetUsers };
+export { Hackathon, GetUsers, CreateHackathon };
