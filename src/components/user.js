@@ -35,15 +35,12 @@ export default class User {
             } else {
                 // Get hackathon document
                 console.log('Document data:', doc.data());
-                // let data = doc.data();
-                // data.applications[this.email] = 'pending';  // Note that applications are referred to by email, not users database ID
-
-                // Update hackathon applications
-                hackathonRef.update({
-                    applications: firestore.firestore.FieldValue.arrayUnion({"email" : this.email, "status" : "pending"})
-                });
-
-                // return data;
+                let data = doc.data();
+                let apps = data.applications;
+                apps[this.email] = (this.email in apps) ? apps[this.email] : 'pending';
+                hackathonRef.set({
+                    "applications": apps
+                }, { merge: true });
             }
         }).catch(err => {
             console.log('Error getting document', err);

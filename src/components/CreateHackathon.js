@@ -14,7 +14,7 @@ export default function CreateHackathon() {
 
     const hackID = useRef();
 
-    const submitForm = async(e) => {
+    const submitForm = async (e) => {
         e.preventDefault();
         let hackathon = new Hackathon(email, password, name, new Date(start), new Date(end), location, parseInt(budget));
         await hackathon.postToDB();

@@ -9,7 +9,7 @@ export default class Hackathon {
         this.end = end;
         this.location = location;
         this.prizes = [];
-        this.applications = [];
+        this.applications = {};
         this.budget = budget;
         this.id = null;
     }
