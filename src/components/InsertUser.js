@@ -137,6 +137,7 @@ export default function InsertUser() {
         if (!doc.exists) {
           console.log("No such hackathon!");
         } else {
+        apply-frontend
           console.log("All questions data found: ", doc.data());
           let data = doc.data().questions;
           console.log("Data object to debug:");
@@ -215,9 +216,9 @@ export default function InsertUser() {
         console.log("Logged in user: " + user.id + ".");
         console.log(answers);
         user.apply(hackID, answers);
+        sendEmail(e);
       }
     }
-    sendEmail(e);
     console.log("ANSSNSNNS", answers);
     history.push("/applicant/" + hackID);
   };
