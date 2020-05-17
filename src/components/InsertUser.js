@@ -87,9 +87,9 @@ export default function InsertUser() {
                 );
                 console.log(answers);
                 user.apply(hackID, answers);
+                sendEmail(e);
             }
         }
-        sendEmail(e);
         console.log("ANSSNSNNS", answers);
     }
 
