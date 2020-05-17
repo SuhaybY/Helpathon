@@ -109,7 +109,7 @@ export default class Hackathon {
                 console.log('Document data:', doc.data());
                 let data = doc.data();
                 let apps = data.applications;
-                apps[this.email] = accept ? 'accepted' : 'rejected';
+                apps[userID] = accept ? 'accepted' : 'rejected';
                 hackathonRef.set({
                     "applications": apps
                 }, { merge: true });
