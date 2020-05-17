@@ -6,6 +6,7 @@ import HackathonView from "./HackathonView";
 import InsertUser from "./InsertUser";
 import AllHackathons from "./AllHackathons";
 import ViewApplicantHackathon from "./viewApplicantHackathon";
+import CreateApplication from "./createApplication";
 
 export {
   Hackathon,
@@ -16,4 +17,5 @@ export {
   InsertUser,
   AllHackathons,
   ViewApplicantHackathon,
+  CreateApplication,
 };
