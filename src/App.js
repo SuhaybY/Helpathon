@@ -4,6 +4,7 @@ import "./App.css";
 import {
   HomePage,
   CreateApplication,
+  ViewApplications,
   HackathonView,
   InsertUser,
   AllHackathons,
@@ -36,6 +37,10 @@ const routes = [
   {
     path: "/applicant/:hackID",
     component: ViewApplicantHackathon,
+  },
+  {
+    path: "/hackathon/:hackID/view-apps",
+    component: ViewApplications,
   },
   {
     path: "/hackathon/:hackID/create-app",

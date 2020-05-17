@@ -177,9 +177,6 @@ export default function CreateApplication() {
 
   const submitQuestions = () => {
     let questionsArray = [];
-    questionsArray.push("Enter your name");
-    questionsArray.push("Enter your email");
-    questionsArray.push("Enter a password");
     questionsArray.push("Enter your age");
     questionsArray.push("Enter your school's name");
     questionsArray.push("Enter any dietary restrictions you may have");
@@ -210,7 +207,8 @@ export default function CreateApplication() {
       );
     }
 
-    console.log(questionsArray);
+    let hackathon = new Hackathon({ id: hackID });
+    hackathon.setQuestions(questionsArray);
   };
 
   return (

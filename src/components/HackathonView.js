@@ -182,6 +182,10 @@ export default function ViewHackathon() {
     history.push("/hackathon/" + hackID + "/create-app");
   };
 
+  const viewAppsHandler = () => {
+    history.push("/hackathon/" + hackID + "/view-apps");
+  };
+
   return (
     <>
       {loggedIn === true ? (
@@ -223,7 +227,9 @@ export default function ViewHackathon() {
                 </Section>
                 <Section color="#80BF9B">
                   <SectionTitle>Application Review</SectionTitle>
-                  <SubmitButton>Review apps</SubmitButton>
+                  <SubmitButton onClick={viewAppsHandler}>
+                    Review apps
+                  </SubmitButton>
                 </Section>
               </SectionWrapper>
             </ApplicationWrapper>
