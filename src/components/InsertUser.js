@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { produce } from 'immer';
 import { useParams } from 'react-router-dom';
 import User from "./user.js";
 import { Hackathon } from "./index.js";
@@ -6,17 +7,14 @@ import firestore from "./Firestore.js";
 
 export default function InsertUser() {
     let { hackID } = useParams();
-    const [email, setEmail] = useState();
-    const [password, setPass] = useState();
-    const [name, setName] = useState();
-    const [answers, setAnswers] = useState([]);
+    const [email, setEmail] = useState('');
+    const [password, setPass] = useState('');
     const [questions, setQuestions] = useState([]);
     // const [questionsHTML, setQuestionHTML] = useState(null);
-
     const db = firestore.firestore();
     const hackathonRef = db.collection('hackathons').doc(hackID);
-
-    useEffect(async () => {
+    const [answers, setAnswers] = useState([]);
+    const doThing = async () => {
         let hackathon = await Hackathon.getHackathonFromId(hackID);
         // Get all questions
         const getQuestions = await db.collection("hackathons").doc(hackID);
@@ -29,6 +27,7 @@ export default function InsertUser() {
                 console.log("Data object to debug:");
                 console.log(data);
                 setQuestions(questions => [...questions, ...data]);
+                setAnswers(Array(questions.length));
             }
         }).catch(err => {
             console.log('Error getting hackathon', err);
@@ -36,28 +35,46 @@ export default function InsertUser() {
 
         console.log("Refreshed info from Firestore database! All questions:")
         console.log(questions);
+    }
+    useEffect(() => {
+        doThing();
     }, []);
 
     const submitForm = async (e) => {
         e.preventDefault();
-        let user = new User(email, password, name);
-        await user.postToDB();
-        console.log("Ans");
-        console.log(answers);
-        user.apply(hackID, answers);
+        // Get id of user
+        const db = firestore.firestore();
+        const userRef = await db
+            .collection("users")
+            .where("email", "==", email.toLowerCase())
+            .get()
+
+        if (userRef.empty) {
+            console.log("Wrong email!");
+        } else {
+            let doc = userRef.docs[0];
+            let docData = doc.data();
+            if (docData.password != password) {
+                console.log("Wrong password!");
+                console.log(userRef);
+                console.log(docData);
+                console.log(docData.password);
+            } else {
+                let user = new User({ id: doc.id });
+                console.log(
+                    "Logged in user: " +
+                    user.id +
+                    "."
+                );
+                console.log(answers);
+                user.apply(hackID, answers);
+            }
+        }
+        console.log("ANSSNSNNS", answers);
     }
 
-    console.log("before return");
-    console.log(questions);
-    const listTest = ['h', 'e', 'l', 'l', 'o'];
     return (
         <form onSubmit={submitForm}>
-            <input
-                type="text"
-                name="name"
-                placeholder="Users Name"
-                onChange={e => setName(e.target.value)}
-            />
             <input
                 type="text"
                 name="start"
@@ -78,11 +95,17 @@ export default function InsertUser() {
                         type="text"
                         name={`Question #${index}`}
                         placeholder={`Answer #${index}`}
-                        onSubmit={e => setAnswers(answers => [...answers, e.target.value])}
+                        onChange={e => {
+                            const val = e.target.value;
+                            setAnswers(currAns =>
+                                produce(currAns, v => {
+                                    v[index] = val;
+                                })
+                            );
+                        }}
                     />
                 </>
             ))}
-            {console.log(listTest)}
             <button type="submit">Submit</button>
         </form>
     );

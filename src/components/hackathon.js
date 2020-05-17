@@ -67,6 +67,8 @@ export default class Hackathon {
                 console.log('No such document!');
             } else {
                 let data = doc.data();
+                console.log("data");
+                console.log(data);
                 data.id = id;
                 return data;
             }
