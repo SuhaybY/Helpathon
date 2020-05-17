@@ -2,6 +2,7 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { GetUsers, InsertUser, Qr } from './components';
+import KommunicateChat from './chat';
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
         <GetUsers />
         <InsertUser />
         <Qr />
+        <KommunicateChat/>
       </header>
     </div>
   );
