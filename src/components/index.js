@@ -8,6 +8,7 @@ import AllHackathons from "./AllHackathons";
 import ViewApplicantHackathon from "./viewApplicantHackathon";
 import CreateApplication from "./createApplication";
 import ViewApplications from "./viewApplications";
+import KommunicateChat from "./kommunicateChat";
 
 export {
   Hackathon,
@@ -20,4 +21,5 @@ export {
   ViewApplicantHackathon,
   CreateApplication,
   ViewApplications,
+  KommunicateChat,
 };

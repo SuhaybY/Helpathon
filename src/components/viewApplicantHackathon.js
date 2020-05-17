@@ -4,6 +4,8 @@ import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 import { Hackathon } from "./index.js";
 
+import { KommunicateChat } from "./index.js";
+
 const Container = styled.div`
   width: 100%;
   height: 100%;
@@ -120,20 +122,24 @@ export default function ViewApplicantHackathon() {
   }, []);
 
   return (
-    <Container>
-      <ContentWrapper>
-        <Title>{name}</Title>
-        <DateLocationWrapper>
-          <HDate>
-            {start} - {end}
-          </HDate>
-          <Location>{location}</Location>
-        </DateLocationWrapper>
-        <SubmitButton onClick={applyHackathon}>Apply</SubmitButton>
-      </ContentWrapper>
-      <FooterText>
-        Created with ❤️ using <LoginLink onClick={goBack}>Helpathon</LoginLink>
-      </FooterText>
-    </Container>
+    <>
+      <KommunicateChat />
+      <Container>
+        <ContentWrapper>
+          <Title>{name}</Title>
+          <DateLocationWrapper>
+            <HDate>
+              {start} - {end}
+            </HDate>
+            <Location>{location}</Location>
+          </DateLocationWrapper>
+          <SubmitButton onClick={applyHackathon}>Apply</SubmitButton>
+        </ContentWrapper>
+        <FooterText>
+          Created with ❤️ using{" "}
+          <LoginLink onClick={goBack}>Helpathon</LoginLink>
+        </FooterText>
+      </Container>
+    </>
   );
 }
