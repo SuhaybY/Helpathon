@@ -3,12 +3,12 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import "./App.css";
 import {
   HomePage,
-  CreateHackathon,
+  CreateApplication,
   HackathonView,
   InsertUser,
   AllHackathons,
+  ViewApplicantHackathon,
 } from "./components";
-import ViewApplicantHackathon from "./components/viewApplicantHackathon";
 
 export default function App() {
   return (
@@ -36,6 +36,10 @@ const routes = [
   {
     path: "/applicant/:hackID",
     component: ViewApplicantHackathon,
+  },
+  {
+    path: "/hackathon/:hackID/create-app",
+    component: CreateApplication,
   },
   {
     path: "/hackathon/:hackID",

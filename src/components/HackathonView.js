@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { GetUsers } from "./";
 import { Hackathon } from "./index.js";
 import firestore from "./Firestore.js";
-import { Redirect } from "react-router-dom";
+import { Redirect, useHistory } from "react-router-dom";
 
 import styled from "styled-components";
 
@@ -154,7 +154,7 @@ const FooterMssg = styled.p`
   margin: 0;
 `;
 
-export default function ViewHackathon({ history }) {
+export default function ViewHackathon() {
   const [loggedIn, setLoggedin] = useState(true);
 
   let { hackID } = useParams();
@@ -162,15 +162,24 @@ export default function ViewHackathon({ history }) {
   const docRef = db.collection("hackathons");
   const [name, setName] = useState("");
   const [budget, setBudget] = useState("");
+  let history = useHistory();
 
-  useEffect(async () => {
+  const fetchHackathonData = async () => {
     let hackathon_data = await Hackathon.getHackathonFromId(hackID);
     setName(hackathon_data.name);
     setBudget(hackathon_data.budget);
+  };
+
+  useEffect(() => {
+    fetchHackathonData();
   }, []);
 
   const goBack = () => {
-    history.push("/");
+    setLoggedin(false);
+  };
+
+  const createAppHandler = () => {
+    history.push("/hackathon/" + hackID + "/create-app");
   };
 
   return (
@@ -208,7 +217,9 @@ export default function ViewHackathon({ history }) {
               <SectionWrapper>
                 <Section color="#C9E4BC">
                   <SectionTitle>Application Creation</SectionTitle>
-                  <SubmitButton>Create app</SubmitButton>
+                  <SubmitButton onClick={createAppHandler}>
+                    Create app
+                  </SubmitButton>
                 </Section>
                 <Section color="#80BF9B">
                   <SectionTitle>Application Review</SectionTitle>

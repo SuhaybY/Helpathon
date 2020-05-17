@@ -101,7 +101,7 @@ export default function ViewApplicantHackathon() {
   const [end, setEnd] = useState("");
   const [location, setLocation] = useState("");
 
-  useEffect(async () => {
+  const fetchHackathonData = async () => {
     let hackathon_data = await Hackathon.getHackathonFromId(hackID);
     setName(hackathon_data.name);
     setLocation(hackathon_data.location);
@@ -113,6 +113,10 @@ export default function ViewApplicantHackathon() {
       hackathon_data.end.seconds * 1000
     ).toLocaleDateString();
     setEnd(endDate);
+  };
+
+  useEffect(() => {
+    fetchHackathonData();
   }, []);
 
   return (
