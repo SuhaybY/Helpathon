@@ -155,16 +155,53 @@ const FooterMssg = styled.p`
 
 export default function ViewHackathon() {
   let { hackID } = useParams();
-  const db = firestore.firestore();
-  const docRef = db.collection("hackathons");
-  const [name, setName] = useState("");
+
+//Connect to the db
+const db = firestore.firestore();
+const hackRef = db.collection("hackathons").doc(hackID);
+const userRef = db.collection("users");
+const [users, setUsers] = useState([]);
+const [rsvpOnly, setRSVP] = useState(false);
+const [name, setName] = useState("");
   const [budget, setBudget] = useState("");
 
-  useEffect(async () => {
-    let hackathon_data = await Hackathon.getHackathonFromId(hackID);
-    setName(hackathon_data.name);
-    setBudget(hackathon_data.budget);
-  }, []);
+let hackathon = new Hackathon({ id: hackID });
+console.log(hackathon);
+
+async function test(tHackUsers) {
+  tHackUsers.forEach(async function(entry) {
+    await userRef.doc(entry[0]).get().then(function(querySnapshot) {
+        // setUsers(users => [...users, {...querySnapshot.data(), id : querySnapshot.id, "status" : entry[1]}]);
+        setUsers(users => [...users, {...querySnapshot.data(), id : querySnapshot.id, "status" : entry[1]}] );
+        console.log({...querySnapshot.data(), id : querySnapshot.id, "status" : entry[1]});
+    }); 
+});
+}
+
+async function getRegistered(tHackUsers) {
+    // setUsers([]);
+    // Query the obtained users now
+    await test(tHackUsers);
+    console.log("Users:");
+    console.log(users);
+}
+
+  //UseEffect for an updated, registered user
+  useEffect(() => {
+    const getRealtimeHackathonUpdates = hackRef.onSnapshot(function(doc) {
+        var tHackUsers = [];
+        var apps = doc.data().applications;
+        Object.keys(apps).forEach(function(key) {
+            tHackUsers.push([key, apps[key]]);
+        });
+        getRegistered(tHackUsers);
+    });
+    // setName(hackathon.name);
+    // setBudget(hackathon.budget);
+    return () => {
+        getRealtimeHackathonUpdates();
+    }
+}, []);
 
   return (
     <>

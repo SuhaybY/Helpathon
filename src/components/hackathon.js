@@ -15,7 +15,8 @@ export default class Hackathon {
                 input.location,
                 input.budget,
                 {},
-                []
+                [],
+                {}
             )
             this.id = null;
         }
@@ -41,7 +42,8 @@ export default class Hackathon {
                     data.location,
                     data.budget,
                     data.applications,
-                    data.prizes
+                    data.prizes,
+                    data.costs
                 )
             }
         }).catch(err => {
@@ -66,7 +68,7 @@ export default class Hackathon {
         return ret;
     }
 
-    populateFields(email, password, name, start, end, location, budget, applications, prizes) {
+    populateFields(email, password, name, start, end, location, budget, applications, prizes, costs) {
         this.email = email;
         this.password = password;
         this.name = name;
@@ -76,6 +78,7 @@ export default class Hackathon {
         this.budget = budget;
         this.applications = applications;
         this.prizes = prizes;
+        this.costs = costs;
     }
 
     async postToDB() {
@@ -90,7 +93,8 @@ export default class Hackathon {
             budget: this.budget,
             prizes: this.prizes,
             location: this.location,
-            applications: this.applications
+            applications: this.applications,
+            costs: this.costs
         });
         this.id = hackRef.id;
         console.log("New hackathon: " + this.id + ". Submitted to the db!");
@@ -119,5 +123,59 @@ export default class Hackathon {
         }).catch(err => {
             console.log('Error getting document', err);
         });
+    }
+
+    static updateBudget(costs, hackID, inc = -1, remItem = false) {
+        const db = firestore.firestore();
+        console.log("Hack ID: " + hackID + " updating: " + inc);
+        console.log(costs);
+        const hackathonRef = db.collection('hackathons').doc(hackID);
+        hackathonRef.get().then(doc => {
+            if (!doc.exists) {
+                console.log('No such document!');
+            } else {
+                let allItems = [];
+                allItems = doc.data().costs;
+                console.log("Items Before:");
+                console.log(allItems);
+                let number = inc;
+                number += costs.name in allItems ? allItems[costs.name].number : 0;
+
+                if (number <=0 || remItem) {
+                    // Delete product
+                    delete allItems[costs.name];
+                    console.log("Delete: " + costs.name);
+                } else {
+                    // Update amount
+                    allItems[costs.name] = { cost: costs.price, number: number };
+                }
+                hackathonRef.update({
+                    "costs" : allItems
+                });
+                console.log("Items After:");
+                console.log(allItems);
+            }
+        }).catch(err => {
+            console.log('Error getting document', err);
+        });
+    }
+
+    static async getBudgetItems(hackID) {
+        const db = firestore.firestore();
+        console.log("Hack ID: " + hackID);
+        const hackathonRef = db.collection('hackathons').doc(hackID);
+        let ret = await hackathonRef.get().then(doc => {
+            if (!doc.exists) {
+                console.log('No such document!');
+            } else {
+                let allItems = doc.data().costs;
+                // console.log("Items on shopping list:");
+                // console.log(allItems);
+                return allItems;
+            }
+        }).catch(err => {
+            console.log('Error getting document', err);
+        });
+        return ret;
     }
 }
