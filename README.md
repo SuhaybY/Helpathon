@@ -1,6 +1,7 @@
 # Helpathon
 Hackathon Planner for the Ryerson University Hackathon
-projec
+project
+**Site:https://helpathon.tech/
 
 ## TechStack
 **This Project was created with [techstack list]**
