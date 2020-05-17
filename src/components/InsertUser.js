@@ -44,7 +44,7 @@ export default function InsertUser() {
 
     const sendEmail = (e) => {
         e.preventDefault();    //This is important, i'm not sure why, but the email won't send without it
-        const mssg = "Thank you for signing up!\nWe will review your application and get back to you ASAP.\nThank you!";
+        const mssg = "Thank you for signing up! We will review your application and get back to you ASAP. Thank you!";
         emailjs.send("gmail", "template_VzSEwjSD", { "to_email": email, "to_name": name, "from_name": "HelpathonOrg", "message_html": mssg }, 'user_zYnljTsUoMvO5zCawfDVa')
             .then(function (response) {
                 console.log('SUCCESS!', response.status, response.text);
