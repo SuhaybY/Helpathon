@@ -130,10 +130,6 @@ export default function ViewApplicantHackathon() {
           <Location>{location}</Location>
         </DateLocationWrapper>
         <SubmitButton onClick={applyHackathon}>Apply</SubmitButton>
-        <LoginText>
-          Already applied? <LoginLink>Login</LoginLink> to go straight to the
-          dashboard
-        </LoginText>
       </ContentWrapper>
       <FooterText>
         Created with ❤️ using <LoginLink onClick={goBack}>Helpathon</LoginLink>
