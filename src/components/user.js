@@ -1,13 +1,14 @@
 import firestore from "./Firestore.js";
-import { Hackathon } from "./index.js";
 
 export default class User {
-    constructor(email, password, name) {
+    constructor(email, password, name, hackID) {
         this.email = email;
         this.password = password;
         this.fullname = name;
         this.rsvp = false;
         this.id = null;
+        this.hackID = hackID;
+        this.status = "pending";
     }
 
     async postToDB() {
@@ -17,33 +18,29 @@ export default class User {
             email: this.email,
             fullname: this.fullname,
             rsvp: this.rsvp,
-            password: this.password
+            password: this.password,
+            status: this.status
         });
         this.id = userRef.id;
-        console.log("New user [below]. Submitted to the db!");
-        console.log(this);
-        return userRef;
-    }
-
-    apply(hackathonID) {
-        const db = firestore.firestore();
-        console.log("Hack ID: " + hackathonID);
-        const hackathonRef = db.collection('hackathons').doc(hackathonID);
-        hackathonRef.get().then(doc => {
+        const hackRef = await db.collection("hackathons").doc(this.hackID);
+        hackRef.get().then(doc => {
             if (!doc.exists) {
-                console.log('No such document!');
+                console.log('No such hackathon!');
             } else {
                 // Get hackathon document
                 console.log('Document data:', doc.data());
                 let data = doc.data();
                 let apps = data.applications;
-                apps[this.email] = (this.email in apps) ? apps[this.email] : 'pending';
-                hackathonRef.set({
+                apps[this.id] = null;
+                hackRef.set({
                     "applications": apps
                 }, { merge: true });
             }
         }).catch(err => {
-            console.log('Error getting document', err);
+            console.log('Error getting hackathon', err);
         });
+        console.log("New user [below]. Submitted to the db!");
+        console.log(this);
+        return userRef;
     }
 }

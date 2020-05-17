@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import './App.css';
-import { HomePage, CreateHackathon, HackathonView, InsertUser, AllHackathons } from './components';
+import { HomePage, CreateHackathon, HackathonView, InsertUser, AllHackathons, Hackathon } from './components';
 
 export default function App() {
   return (

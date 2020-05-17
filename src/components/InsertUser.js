@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
+import { useParams } from "react-router-dom";
 import User from "./user.js";
 
 export default function InsertUser() {
     const [email, setEmail] = useState();
     const [password, setPass] = useState();
     const [name, setName] = useState();
+    
+    let { hackID } = useParams();
 
     const submitForm = (e) => {
         e.preventDefault();
-        let user = new User(email, password, name);
+        let user = new User(email, password, name, hackID);
         user.postToDB();
     }
 

@@ -5,20 +5,34 @@ import { Hackathon } from './index.js';
 export default function GetUsers({ hackID }) {
     //Connect to the db
     const db = firestore.firestore();
-    const docRef = db.collection("users");
+    const hackRef = db.collection("hackathons").doc(hackID);
+    const userRef = db.collection("users");
     const [users, setUsers] = useState([]);
     const [rsvpOnly, setRSVP] = useState(false);
     let hackathon = new Hackathon({ id: hackID });
 
+    function getRegistered(tHackUsers) {
+        setUsers([]);
+        // Query the obtained users now
+        tHackUsers.forEach(function(entry) {
+            userRef.doc(entry[0]).get().then(function(querySnapshot) {
+                setUsers(users => [...users, {...querySnapshot.data(), id : querySnapshot.id, "status" : entry[1]}]);
+            }); 
+        });
+    }
+
+    //UseEffect for an updated, registered user
     useEffect(() => {
-        const getRealtimeUpdates = docRef.onSnapshot({ includeMetadataChanges: true }, querySnapshot => {
-            const allUsers = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-            setUsers(allUsers);
-            console.log("Refreshed info from Firestore database! All users:")
-            console.log(allUsers);
+        const getRealtimeHackathonUpdates = hackRef.onSnapshot(function(doc) {
+            var tHackUsers = [];
+            var apps = doc.data().applications;
+            Object.keys(apps).forEach(function(key) {
+                tHackUsers.push([key, apps[key]]);
+            });
+            getRegistered(tHackUsers);
         });
         return () => {
-            getRealtimeUpdates();
+            getRealtimeHackathonUpdates();
         }
     }, []);
 
@@ -46,6 +60,7 @@ export default function GetUsers({ hackID }) {
                             <div>Email: {user.email}</div>
                             <div>Full Name: {user.fullname}</div>
                             <div>RSVP'd: {String(user.rsvp)}</div>
+                            <div>Status: {user.status}</div>
                             {/* The following is just to check that the returned type is securely hashed */}
                             <div>Password: {user.password}</div>
                         </div>
