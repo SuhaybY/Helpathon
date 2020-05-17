@@ -8,7 +8,7 @@ export default class User {
         } else {
             this.email = input.email;
             this.password = input.password;
-            this.fullname = input.name;
+            this.fullname = input.fullname;
             this.rsvp = false;
             this.id = null;
         }

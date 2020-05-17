@@ -7,6 +7,7 @@ import firestore from "./Firestore.js";
 
 export default function InsertUser() {
     let { hackID } = useParams();
+    const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPass] = useState('');
     const [questions, setQuestions] = useState([]);
@@ -50,7 +51,12 @@ export default function InsertUser() {
             .get()
 
         if (userRef.empty) {
-            console.log("Wrong email!");
+            console.log("User not found.\nCreating new user");
+            let user = new User({ fullname: name, email: email.toLowerCase(), password: password });
+            await user.postToDB();
+            console.log("User created with ID: ", user.id);
+            console.log("Applying to hackathon:", hackID);
+            user.apply(hackID, answers);
         } else {
             let doc = userRef.docs[0];
             let docData = doc.data();
@@ -77,13 +83,19 @@ export default function InsertUser() {
         <form onSubmit={submitForm}>
             <input
                 type="text"
-                name="start"
+                name="name"
+                placeholder="Name"
+                onChange={e => setName(e.target.value)}
+            />
+            <input
+                type="text"
+                name="email"
                 placeholder="Email"
                 onChange={e => setEmail(e.target.value)}
             />
             <input
                 type="text"
-                name="end"
+                name="password"
                 placeholder="Password"
                 onChange={e => setPass(e.target.value)}
             />
