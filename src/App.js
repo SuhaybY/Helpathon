@@ -8,6 +8,7 @@ import {
   InsertUser,
   AllHackathons,
 } from "./components";
+import ViewApplicantHackathon from "./components/viewApplicantHackathon";
 
 export default function App() {
   return (
@@ -31,9 +32,10 @@ export default function App() {
 }
 
 const routes = [
+  { path: "/applicant/:hackID/apply", component: InsertUser },
   {
     path: "/applicant/:hackID",
-    component: InsertUser,
+    component: ViewApplicantHackathon,
   },
   {
     path: "/hackathon/all",
