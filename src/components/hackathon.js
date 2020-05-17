@@ -16,7 +16,8 @@ export default class Hackathon {
         input.budget,
         {},
         [],
-        []
+        [],
+        {}
       );
       this.id = null;
     }
@@ -70,7 +71,8 @@ export default class Hackathon {
             data.budget,
             data.applications,
             data.prizes,
-            data.questions
+            data.questions,
+            data.costs
           );
         }
       })
@@ -143,7 +145,8 @@ export default class Hackathon {
     budget,
     applications,
     prizes,
-    questions
+    questions,
+    costs
   ) {
     this.email = email;
     this.password = password;
@@ -155,6 +158,7 @@ export default class Hackathon {
     this.applications = applications;
     this.prizes = prizes;
     this.questions = questions;
+    this.costs = costs;
   }
 
   async postToDB() {
@@ -171,6 +175,7 @@ export default class Hackathon {
       location: this.location,
       applications: this.applications,
       questions: this.questions,
+      costs: this.costs
     });
     this.id = hackRef.id;
     console.log("New hackathon: " + this.id + ". Submitted to the db!");
