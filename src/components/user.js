@@ -10,6 +10,23 @@ export default class User {
         this.id = null;
     }
 
+    static async getUserFromId(id) {
+        const db = firestore.firestore();
+        const userRef = db.collection('users').doc(id);
+        let ret = await userRef.get().then(doc => {
+            if (!doc.exists) {
+                console.log('No such user!');
+            } else {
+                let data = doc.data();
+                data.id = id;
+                return data;
+            }
+        }).catch(err => {
+            console.log('Error getting document', err);
+        });
+        return ret;
+    }
+
     async postToDB() {
         const db = firestore.firestore();
         //Query the db
@@ -25,7 +42,7 @@ export default class User {
         return userRef;
     }
 
-    apply(hackathonID) {
+    apply(hackathonID, answerArray) {
         const db = firestore.firestore();
         console.log("Hack ID: " + hackathonID);
         const hackathonRef = db.collection('hackathons').doc(hackathonID);
@@ -37,7 +54,12 @@ export default class User {
                 console.log('Document data:', doc.data());
                 let data = doc.data();
                 let apps = data.applications;
-                apps[this.email] = (this.email in apps) ? apps[this.email] : 'pending';
+                let applicationField = {
+                    status: 'pending',
+                    answers: answerArray
+                }
+                apps[this.id] = (this.id in apps) ? apps[this.id] : applicationField;
+                console.log(apps);
                 hackathonRef.set({
                     "applications": apps
                 }, { merge: true });
