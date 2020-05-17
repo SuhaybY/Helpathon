@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import User from "./user.js";
 import { Hackathon } from "./index.js";
 import firestore from "./Firestore.js";
+import emailjs from 'emailjs-com';
 
 export default function InsertUser() {
     let { hackID } = useParams();
@@ -41,6 +42,18 @@ export default function InsertUser() {
         doThing();
     }, []);
 
+    const sendEmail = (e) => {
+        e.preventDefault();    //This is important, i'm not sure why, but the email won't send without it
+        const mssg = "Thank you for signing up!\nWe will review your application and get back to you ASAP.\nThank you!";
+        emailjs.send("gmail", "template_VzSEwjSD", { "to_email": email, "to_name": name, "from_name": "HelpathonOrg", "message_html": mssg }, 'user_zYnljTsUoMvO5zCawfDVa')
+            .then(function (response) {
+                console.log('SUCCESS!', response.status, response.text);
+            }, function (error) {
+                console.log('FAILED...', error);
+            });
+
+    }
+
     const submitForm = async (e) => {
         e.preventDefault();
         // Get id of user
@@ -76,6 +89,7 @@ export default function InsertUser() {
                 user.apply(hackID, answers);
             }
         }
+        sendEmail(e);
         console.log("ANSSNSNNS", answers);
     }
 
