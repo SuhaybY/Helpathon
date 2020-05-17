@@ -24,6 +24,17 @@ export default class Hackathon {
 
     setQuestions(questions) {
         this.questions = questions;
+        const db = firestore.firestore();
+        console.log("Hack ID: " + this.id);
+        const hackathonRef = db.collection('hackathons').doc(this.id);
+        hackathonRef.get().then(doc => {
+            let data = doc.data();
+            hackathonRef.set({
+                "questions": questions
+            }, { merge: true });
+        }).catch(err => {
+            console.log('Error getting document', err);
+        });
     }
 
     getQuestions() {
@@ -121,20 +132,6 @@ export default class Hackathon {
             hackathonRef.set({
                 "applications": apps
             }, { merge: true });
-            // if (!doc.exists) {
-            //     console.log('No such document!');
-            // } else {
-            //     // Get hackathon document
-            //     console.log('Document data:', doc.data());
-            //     let data = doc.data();
-            //     let apps = data.applications;
-            //     apps[userID].status = accept ? 'accepted' : 'rejected';
-            //     hackathonRef.set({
-            //         "applications": apps
-            //     }, { merge: true });
-
-            //     // This is where you would send an email to the user
-            // }
         }).catch(err => {
             console.log('Error getting document', err);
         });
@@ -152,6 +149,22 @@ export default class Hackathon {
                 let data = doc.data();
                 let apps = data.applications;
                 return apps;
+            }
+        }));
+    }
+
+    getQuestionsFromDB() {
+        const db = firestore.firestore();
+        const hackathonRef = db.collection('hackathons').doc(this.id);
+        return (hackathonRef.get().then(doc => {
+            if (!doc.exists) {
+                console.log('No such document!');
+            } else {
+                // Get hackathon document
+                console.log('Document data:', doc.data());
+                let data = doc.data();
+                let questions = data.questions;
+                return questions;
             }
         }));
     }
