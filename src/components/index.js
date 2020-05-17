@@ -6,6 +6,7 @@ import HackathonView from "./HackathonView";
 import InsertUser from "./InsertUser";
 import AllHackathons from "./AllHackathons";
 import ViewApplicantHackathon from "./viewApplicantHackathon";
+import HackBudget from "./HackBudget";
 import CreateApplication from "./createApplication";
 import ViewApplications from "./viewApplications";
 import KommunicateChat from "./kommunicateChat";
@@ -19,6 +20,7 @@ export {
   InsertUser,
   AllHackathons,
   ViewApplicantHackathon,
+  HackBudget,
   CreateApplication,
   ViewApplications,
   KommunicateChat,

@@ -158,9 +158,14 @@ export default function ViewHackathon() {
   const [loggedIn, setLoggedin] = useState(true);
 
   let { hackID } = useParams();
-  const db = firestore.firestore();
-  const docRef = db.collection("hackathons");
-  const [name, setName] = useState("");
+
+//Connect to the db
+const db = firestore.firestore();
+const hackRef = db.collection("hackathons").doc(hackID);
+const userRef = db.collection("users");
+const [users, setUsers] = useState([]);
+const [rsvpOnly, setRSVP] = useState(false);
+const [name, setName] = useState("");
   const [budget, setBudget] = useState("");
   let history = useHistory();
 
