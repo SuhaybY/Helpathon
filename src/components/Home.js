@@ -183,26 +183,36 @@ export default function Home() {
   };
 
   const signUp = async (e) => {
-    e.preventDefault();
-    // Get id of hackathon
-    const db = firestore.firestore();
-    let hackathon = new Hackathon({
-      email: email,
-      password: password,
-      name: name,
-      start: new Date(start),
-      end: new Date(end),
-      location: location,
-      budget: parseInt(budget.replace("$", "")),
-    });
-    await hackathon.postToDB();
-    hackID.current = hackathon.id;
-    console.log(
-      "Created a new hackathon: " +
-        hackathon.id +
-        ". Redirecting to hackathon management page"
-    );
-    history.push("/hackathon/" + hackID.current);
+    if (
+      email !== "" &&
+      password !== "" &&
+      name !== "" &&
+      start !== "" &&
+      end !== "" &&
+      location !== "" &&
+      budget !== ""
+    ) {
+      e.preventDefault();
+      // Get id of hackathon
+      const db = firestore.firestore();
+      let hackathon = new Hackathon({
+        email: email,
+        password: password,
+        name: name,
+        start: new Date(start),
+        end: new Date(end),
+        location: location,
+        budget: parseInt(budget.replace("$", "")),
+      });
+      await hackathon.postToDB();
+      hackID.current = hackathon.id;
+      console.log(
+        "Created a new hackathon: " +
+          hackathon.id +
+          ". Redirecting to hackathon management page"
+      );
+      history.replace("/hackathon/" + hackID.current);
+    }
   };
 
   const hackathonLogin = (e) => {
@@ -234,14 +244,14 @@ export default function Home() {
                 hackathon.id +
                 ". Redirecting to hackathon management page"
             );
-            history.push("/hackathon/" + hackID.current);
+            history.replace("/hackathon/" + hackID.current);
           }
         }
       });
   };
 
   const viewAllHackathons = () => {
-    history.push("/hackathon/all");
+    history.push("/hackathons");
   };
 
   return (

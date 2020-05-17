@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
@@ -32,7 +32,7 @@ const DateLocationWrapper = styled.div`
   margin: 0 0 60px 0;
 `;
 
-const Date = styled.p`
+const HDate = styled.p`
   font-family: Inter-Medium;
   font-size: 24px;
   color: black;
@@ -89,20 +89,41 @@ export default function ViewApplicantHackathon() {
   let { hackID } = useParams();
 
   const goBack = () => {
-    history.push("/");
+    history.replace("/");
   };
 
   const applyHackathon = () => {
     history.push("/applicant/" + hackID + "/apply");
   };
 
+  const [name, setName] = useState("");
+  const [start, setStart] = useState("");
+  const [end, setEnd] = useState("");
+  const [location, setLocation] = useState("");
+
+  useEffect(async () => {
+    let hackathon_data = await Hackathon.getHackathonFromId(hackID);
+    setName(hackathon_data.name);
+    setLocation(hackathon_data.location);
+    let startDate = new Date(
+      hackathon_data.start.seconds * 1000
+    ).toLocaleDateString();
+    setStart(startDate);
+    let endDate = new Date(
+      hackathon_data.end.seconds * 1000
+    ).toLocaleDateString();
+    setEnd(endDate);
+  }, []);
+
   return (
     <Container>
       <ContentWrapper>
-        <Title>Hackathon Name</Title>
+        <Title>{name}</Title>
         <DateLocationWrapper>
-          <Date>5/4/20 - 5/7/20</Date>
-          <Location>Toronto</Location>
+          <HDate>
+            {start} - {end}
+          </HDate>
+          <Location>{location}</Location>
         </DateLocationWrapper>
         <SubmitButton onClick={applyHackathon}>Apply</SubmitButton>
         <LoginText>
