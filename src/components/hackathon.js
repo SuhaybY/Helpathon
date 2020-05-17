@@ -15,10 +15,30 @@ export default class Hackathon {
                 input.location,
                 input.budget,
                 {},
+                [],
                 []
             )
             this.id = null;
         }
+    }
+
+    setQuestions(questions) {
+        this.questions = questions;
+        const db = firestore.firestore();
+        console.log("Hack ID: " + this.id);
+        const hackathonRef = db.collection('hackathons').doc(this.id);
+        hackathonRef.get().then(doc => {
+            let data = doc.data();
+            hackathonRef.set({
+                "questions": questions
+            }, { merge: true });
+        }).catch(err => {
+            console.log('Error getting document', err);
+        });
+    }
+
+    getQuestions() {
+        return this.questions;
     }
 
     // This constructor gets the fields from teh database
@@ -41,7 +61,8 @@ export default class Hackathon {
                     data.location,
                     data.budget,
                     data.applications,
-                    data.prizes
+                    data.prizes,
+                    data.questions
                 )
             }
         }).catch(err => {
@@ -57,6 +78,8 @@ export default class Hackathon {
                 console.log('No such document!');
             } else {
                 let data = doc.data();
+                console.log("data");
+                console.log(data);
                 data.id = id;
                 return data;
             }
@@ -66,7 +89,7 @@ export default class Hackathon {
         return ret;
     }
 
-    populateFields(email, password, name, start, end, location, budget, applications, prizes) {
+    populateFields(email, password, name, start, end, location, budget, applications, prizes, questions) {
         this.email = email;
         this.password = password;
         this.name = name;
@@ -76,6 +99,7 @@ export default class Hackathon {
         this.budget = budget;
         this.applications = applications;
         this.prizes = prizes;
+        this.questions = questions;
     }
 
     async postToDB() {
@@ -90,7 +114,8 @@ export default class Hackathon {
             budget: this.budget,
             prizes: this.prizes,
             location: this.location,
-            applications: this.applications
+            applications: this.applications,
+            questions: this.questions
         });
         this.id = hackRef.id;
         console.log("New hackathon: " + this.id + ". Submitted to the db!");
@@ -102,6 +127,20 @@ export default class Hackathon {
         console.log("Hack ID: " + this.id);
         const hackathonRef = db.collection('hackathons').doc(this.id);
         hackathonRef.get().then(doc => {
+            let apps = this.getApplications();
+            apps[userID].status = accept ? 'accepted' : 'rejected';
+            hackathonRef.set({
+                "applications": apps
+            }, { merge: true });
+        }).catch(err => {
+            console.log('Error getting document', err);
+        });
+    }
+
+    getApplications() {
+        const db = firestore.firestore();
+        const hackathonRef = db.collection('hackathons').doc(this.id);
+        return (hackathonRef.get().then(doc => {
             if (!doc.exists) {
                 console.log('No such document!');
             } else {
@@ -109,15 +148,24 @@ export default class Hackathon {
                 console.log('Document data:', doc.data());
                 let data = doc.data();
                 let apps = data.applications;
-                apps[this.email] = accept ? 'accepted' : 'rejected';
-                hackathonRef.set({
-                    "applications": apps
-                }, { merge: true });
-
-                // This is where you would send an email to the user
+                return apps;
             }
-        }).catch(err => {
-            console.log('Error getting document', err);
-        });
+        }));
+    }
+
+    getQuestionsFromDB() {
+        const db = firestore.firestore();
+        const hackathonRef = db.collection('hackathons').doc(this.id);
+        return (hackathonRef.get().then(doc => {
+            if (!doc.exists) {
+                console.log('No such document!');
+            } else {
+                // Get hackathon document
+                console.log('Document data:', doc.data());
+                let data = doc.data();
+                let questions = data.questions;
+                return questions;
+            }
+        }));
     }
 }
