@@ -208,8 +208,8 @@ export default function Home() {
       hackID.current = hackathon.id;
       console.log(
         "Created a new hackathon: " +
-          hackathon.id +
-          ". Redirecting to hackathon management page"
+        hackathon.id +
+        ". Redirecting to hackathon management page"
       );
       history.replace("/hackathon/" + hackID.current);
     }
@@ -241,8 +241,8 @@ export default function Home() {
             hackID.current = hackathon.id;
             console.log(
               "Logged in hackathon: " +
-                hackathon.id +
-                ". Redirecting to hackathon management page"
+              hackathon.id +
+              ". Redirecting to hackathon management page"
             );
             history.replace("/hackathon/" + hackID.current);
           }
@@ -328,93 +328,93 @@ export default function Home() {
                 <SubmitButton onClick={toStep2}>Get Started</SubmitButton>
               </>
             ) : (
-              <>
-                <SignupTitle>Enter your Hackathon's Information</SignupTitle>
-                <SignupInputWrapper>
-                  <SignupInputLabel for="hackathonName">
-                    Enter your hackathon's name
+                <>
+                  <SignupTitle>Enter your Hackathon's Information</SignupTitle>
+                  <SignupInputWrapper>
+                    <SignupInputLabel for="hackathonName">
+                      Enter your hackathon's name
                   </SignupInputLabel>
-                  <SignupTextInput
-                    placeholder="RU Hacks"
-                    type="text"
-                    id="hackathonName"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                  ></SignupTextInput>
-                </SignupInputWrapper>
-                <SignupInputWrapper>
-                  <SignupInputLabel for="startDate">
-                    Enter your hackathon's start date
+                    <SignupTextInput
+                      placeholder="RU Hacks"
+                      type="text"
+                      id="hackathonName"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                    ></SignupTextInput>
+                  </SignupInputWrapper>
+                  <SignupInputWrapper>
+                    <SignupInputLabel for="startDate">
+                      Enter your hackathon's start date
                   </SignupInputLabel>
-                  <SignupTextInput
-                    placeholder="May 17, 2020"
-                    type="date"
-                    id="startDate"
-                    onChange={(e) => setStart(e.target.value)}
-                  ></SignupTextInput>
-                </SignupInputWrapper>
-                <SignupInputWrapper>
-                  <SignupInputLabel for="endDate">
-                    Enter your hackathon's end date
+                    <SignupTextInput
+                      placeholder="May 17, 2020"
+                      type="date"
+                      id="startDate"
+                      onChange={(e) => setStart(e.target.value)}
+                    ></SignupTextInput>
+                  </SignupInputWrapper>
+                  <SignupInputWrapper>
+                    <SignupInputLabel for="endDate">
+                      Enter your hackathon's end date
                   </SignupInputLabel>
-                  <SignupTextInput
-                    placeholder="May 20, 2020"
-                    type="date"
-                    id="endDate"
-                    onChange={(e) => setEnd(e.target.value)}
-                  ></SignupTextInput>
-                </SignupInputWrapper>
-                <SignupInputWrapper>
-                  <SignupInputLabel for="location">
-                    Enter your hackathon's location
+                    <SignupTextInput
+                      placeholder="May 20, 2020"
+                      type="date"
+                      id="endDate"
+                      onChange={(e) => setEnd(e.target.value)}
+                    ></SignupTextInput>
+                  </SignupInputWrapper>
+                  <SignupInputWrapper>
+                    <SignupInputLabel for="location">
+                      Enter your hackathon's location
                   </SignupInputLabel>
-                  <SignupTextInput
-                    placeholder="Toronto"
-                    type="text"
-                    id="location"
-                    onChange={(e) => setLocation(e.target.value)}
-                  ></SignupTextInput>
-                </SignupInputWrapper>
-                <SignupInputWrapper>
-                  <SignupInputLabel for="budget">
-                    Enter your hackathon's budget
+                    <SignupTextInput
+                      placeholder="Toronto"
+                      type="text"
+                      id="location"
+                      onChange={(e) => setLocation(e.target.value)}
+                    ></SignupTextInput>
+                  </SignupInputWrapper>
+                  <SignupInputWrapper>
+                    <SignupInputLabel for="budget">
+                      Enter your hackathon's budget
                   </SignupInputLabel>
-                  <SignupTextInput
-                    placeholder="1000"
-                    type="text"
-                    id="budget"
-                    onChange={(e) => setBudget(e.target.value)}
-                  ></SignupTextInput>
-                </SignupInputWrapper>
-                <SubmitButton onClick={signUp}>Start Organizing</SubmitButton>
-              </>
-            )}
+                    <SignupTextInput
+                      placeholder="1000"
+                      type="text"
+                      id="budget"
+                      onChange={(e) => setBudget(e.target.value)}
+                    ></SignupTextInput>
+                  </SignupInputWrapper>
+                  <SubmitButton onClick={signUp}>Start Organizing</SubmitButton>
+                </>
+              )}
           </SignupDiv>
         ) : (
-          <LoginDiv>
-            <SignupInputWrapper>
-              <SignupInputLabel for="email">Enter your email</SignupInputLabel>
-              <SignupTextInput
-                placeholder="Email"
-                type="text"
-                id="email"
-                onChange={(e) => setEmail(e.target.value)}
-              ></SignupTextInput>
-            </SignupInputWrapper>
-            <SignupInputWrapper>
-              <SignupInputLabel for="password">
-                Enter your password
+            <LoginDiv>
+              <SignupInputWrapper>
+                <SignupInputLabel for="email">Enter your email</SignupInputLabel>
+                <SignupTextInput
+                  placeholder="Email"
+                  type="text"
+                  id="email"
+                  onChange={(e) => setEmail(e.target.value)}
+                ></SignupTextInput>
+              </SignupInputWrapper>
+              <SignupInputWrapper>
+                <SignupInputLabel for="password">
+                  Enter your password
               </SignupInputLabel>
-              <SignupTextInput
-                placeholder="password"
-                type="password"
-                id="password"
-                onChange={(e) => setPass(e.target.value)}
-              ></SignupTextInput>
-            </SignupInputWrapper>
-            <SubmitButton onClick={hackathonLogin}>Login</SubmitButton>
-          </LoginDiv>
-        )}
+                <SignupTextInput
+                  placeholder="password"
+                  type="password"
+                  id="password"
+                  onChange={(e) => setPass(e.target.value)}
+                ></SignupTextInput>
+              </SignupInputWrapper>
+              <SubmitButton onClick={hackathonLogin}>Login</SubmitButton>
+            </LoginDiv>
+          )}
       </FormContainer>
     </Container>
   );

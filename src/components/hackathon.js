@@ -1,5 +1,5 @@
 import firestore from "./Firestore.js";
-
+import { sendEmail } from "./common.js";
 export default class Hackathon {
 
     constructor(input) {
@@ -127,11 +127,27 @@ export default class Hackathon {
         console.log("Hack ID: " + this.id);
         const hackathonRef = db.collection('hackathons').doc(this.id);
         hackathonRef.get().then(doc => {
-            let apps = this.getApplications();
-            apps[userID].status = accept ? 'accepted' : 'rejected';
-            hackathonRef.set({
-                "applications": apps
-            }, { merge: true });
+            let apps = this.getApplications().then((apps) => {
+                console.log(apps);
+                apps[userID].status = accept ? 'accepted' : 'rejected';
+                hackathonRef.set({
+                    "applications": apps
+                }, { merge: true });
+
+                const userRef = db.collection('users').doc(userID).get().then(userDoc => {
+                    let userData = userDoc.data();
+                    let msg = '';
+                    if (accept) {
+                        msg = `Congratualations, you have been accepted to attend ${doc.data().name}! See you there!`
+                    } else {
+                        msg = `Unfortunately, you have not been accepted to attend ${doc.data().name}. Please try again next year!`
+                    }
+                    sendEmail(userData.email, userData.fullname, msg);
+                });
+            }
+            );
+
+
         }).catch(err => {
             console.log('Error getting document', err);
         });
