@@ -30,7 +30,7 @@ const Title = styled.h1`
 
 const HackathonsGrid = styled.div`
   width: calc(100% - 80px);
-  margin: 0 auto 0 auto;
+  margin: 0 auto 100px auto;
   height: fit-content;
   display: grid;
   grid-template-columns: 40% 40%;
@@ -133,6 +133,7 @@ export default function AllHackathons() {
   };
 
   const hackathonsHTML = hackathons.map((hackathon) => {
+    console.log(hackathon);
     let startDate = new Date(
       hackathon.start.seconds * 1000
     ).toLocaleDateString();

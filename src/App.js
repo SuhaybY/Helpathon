@@ -3,13 +3,14 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import "./App.css";
 import {
   HomePage,
-  CreateHackathon,
+  CreateApplication,
+  ViewApplications,
   HackathonView,
   InsertUser,
   AllHackathons,
-  HackBudget,
+  ViewApplicantHackathon,
+  HackBudget
 } from "./components";
-import ViewApplicantHackathon from "./components/viewApplicantHackathon";
 
 export default function App() {
   return (
@@ -33,17 +34,18 @@ export default function App() {
 }
 
 const routes = [
-  { 
-    path: "/applicant/:hackID/apply", 
-    component: InsertUser 
-  },
+  { path: "/applicant/:hackID/apply", component: InsertUser, exact: false },
   {
     path: "/applicant/:hackID",
     component: ViewApplicantHackathon,
   },
   {
-    path: "/hackathon/all",
-    component: AllHackathons,
+    path: "/hackathon/:hackID/view-apps",
+    component: ViewApplications,
+  },
+  {
+    path: "/hackathon/:hackID/create-app",
+    component: CreateApplication,
   },
   {
     path: "/hackathon/:hackID/budget",
@@ -54,8 +56,8 @@ const routes = [
     component: HackathonView,
   },
   {
-    path: "/hackathon",
-    component: CreateHackathon,
+    path: "/hackathons",
+    component: AllHackathons,
   },
   {
     path: "/",
