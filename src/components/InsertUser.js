@@ -6,6 +6,7 @@ import { Hackathon } from "./index.js";
 import firestore from "./Firestore.js";
 import emailjs from "emailjs-com";
 import styled from "styled-components";
+import { useQrEncode, useQrDecode } from "react-qr-hooks";
 
 const Container = styled.div`
   width: 100%;
@@ -156,10 +157,13 @@ export default function InsertUser() {
     doThing();
   }, []);
 
+  const encode = useQrEncode(name);
   const sendEmail = (e) => {
     e.preventDefault(); //This is important, i'm not sure why, but the email won't send without it
     const mssg =
-      "Thank you for signing up! We will review your application and get back to you ASAP. Thank you!";
+      "Thank you for signing up! We will review your application and get back to you ASAP. Thank you!" +
+      "\n" +
+      encode;
     emailjs
       .send(
         "gmail",

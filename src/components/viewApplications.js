@@ -1,11 +1,70 @@
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { GetUsers } from "./";
 import { Hackathon } from "./index.js";
 import firestore from "./Firestore.js";
 import { Redirect, Link } from "react-router-dom";
+import produce, { product } from "immer";
 
 import styled from "styled-components";
+
+const Modal = styled.div`
+  position: fixed;
+  width: 50%;
+  height: 500px;
+  overflow-y: scroll;
+  border-radius: 10px;
+  background: #f2f2f2;
+  top: 150px;
+  left: 25%;
+  z-index: 3;
+  box-sizing: border-box;
+  padding: 40px 60px 40px 60px;
+`;
+
+const ModalTitleWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 0 40px 0;
+`;
+
+const ModalTitle = styled.h3`
+  font-family: Inter-Bold;
+  font-size: 24px;
+  color: black;
+  margin: 0;
+`;
+
+const QAWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: 0 0 30px 0;
+`;
+
+const ModalQ = styled.p`
+  font-family: Inter-Regular;
+  font-size: 14px;
+  color: #828282;
+  margin: 0 0 10px 0;
+`;
+
+const ModalA = styled.p`
+  font-family: Inter-Regular;
+  font-size: 14px;
+  color: black;
+  margin: 0 0 10px 0;
+`;
+
+const Overlay = styled.div`
+  width: 100%;
+  height: 100vh;
+  background: black;
+  opacity: 0.8;
+  position: fixed;
+  z-index: 2;
+`;
 
 const Header = styled.div`
   width: 100%;
@@ -25,6 +84,34 @@ const SubmitButton = styled.button`
   color: White;
   font-size: 14px;
   background: #333333;
+  border-radius: 100px;
+  margin: 0 0 0 0;
+  outline: none;
+  border: none;
+  cursor: pointer;
+`;
+
+const AcceptButton = styled.button`
+  width: fit-content;
+  padding: 15px 20px;
+  font-family: Inter-SemiBold;
+  color: White;
+  font-size: 14px;
+  background: #27ae60;
+  border-radius: 100px;
+  margin: 0 0 0 0;
+  outline: none;
+  border: none;
+  cursor: pointer;
+`;
+
+const RejectButton = styled.button`
+  width: fit-content;
+  padding: 15px 20px;
+  font-family: Inter-SemiBold;
+  color: White;
+  font-size: 14px;
+  background: #eb5757;
   border-radius: 100px;
   margin: 0 0 0 0;
   outline: none;
@@ -161,32 +248,138 @@ const FooterMssg = styled.p`
 export default function ViewApplications() {
   const [loggedIn, setLoggedin] = useState(true);
 
+  const [viewIndApp, setViewIndApp] = useState(false);
+  const [appNo, setAppNo] = useState();
+  const [appKey, setAppKey] = useState();
+
   let { hackID } = useParams();
   const [name, setName] = useState("");
+  const [questions, setQuestions] = useState();
 
-  const [q1, setQ1] = useState(false);
-  const [q2, setQ2] = useState(false);
-  const [q3, setQ3] = useState(false);
-  const [q4, setQ4] = useState(false);
-  const [q5, setQ5] = useState(false);
+  const [allApps, setAllApps] = useState({});
+
+  const db = firestore.firestore();
+  const hackRef = db.collection("hackathons").doc(hackID);
+  const userRef = db.collection("users");
+  const [users, setUsers] = useState([]);
+  const [rsvpOnly, setRSVP] = useState(false);
+  let hackathon = new Hackathon({ id: hackID });
+
+  const [appObj, setAppObj] = useState({});
 
   const fetchHackathonData = async () => {
     let hackathon_data = await Hackathon.getHackathonFromId(hackID);
     setName(hackathon_data.name);
+    setQuestions(hackathon_data.questions);
   };
 
   useEffect(() => {
     fetchHackathonData();
   }, []);
 
+  function getRegistered(tHackUsers) {
+    setUsers([]);
+    // Query the obtained users now
+    tHackUsers.forEach(function (entry) {
+      userRef
+        .doc(entry[0])
+        .get()
+        .then(function (querySnapshot) {
+          setUsers((users) => [
+            ...users,
+            { ...querySnapshot.data(), id: querySnapshot.id, status: entry[1] },
+          ]);
+          console.log(users);
+        });
+    });
+  }
+
+  //UseEffect for an updated, registered user
+  useEffect(() => {
+    const getRealtimeHackathonUpdates = hackRef.onSnapshot(function (doc) {
+      var tHackUsers = [];
+      console.log(doc.data());
+      let apps = doc.data().applications;
+      setAppObj(() => {
+        return { ...apps };
+      });
+      console.log(appObj);
+      Object.keys(apps).forEach(function (key) {
+        tHackUsers.push([key, apps[key]]);
+      });
+      getRegistered(tHackUsers);
+    });
+    return () => {
+      getRealtimeHackathonUpdates();
+    };
+  }, []);
+
+  const appsRef = useRef(appObj);
+  useEffect(() => {
+    appsRef.current = appObj;
+  }, [appObj]);
+
   const goBack = () => {
     setLoggedin(false);
+  };
+
+  const appsHTML = Object.keys(appsRef.current).map((key, index) => {
+    return (
+      <ApplicationInfoWrapper>
+        <ApplicationInfo>{index + 1}</ApplicationInfo>
+        <ApplicationInfo>{key}</ApplicationInfo>
+        <SubmitButton
+          onClick={() => {
+            setViewIndApp(true);
+            setAppNo(index + 1);
+            setAppKey(key);
+          }}
+        >
+          View Application
+        </SubmitButton>
+      </ApplicationInfoWrapper>
+    );
+  });
+
+  const handleAccept = () => {
+    let h = new Hackathon({ id: hackID });
+    h.acceptReject(appKey, true);
+  };
+  const handleReject = () => {
+    let h = new Hackathon({ id: hackID });
+    h.acceptReject(appKey, false);
   };
 
   return (
     <>
       {loggedIn === true ? (
         <>
+          {viewIndApp === true ? (
+            <>
+              <Modal>
+                <ModalTitleWrapper>
+                  <ModalTitle>Application No. {appNo}</ModalTitle>
+                  <AcceptButton onClick={handleAccept}>Accept</AcceptButton>
+                  <RejectButton onClick={handleReject}>Reject</RejectButton>
+                </ModalTitleWrapper>
+                {appsRef.current[appKey].answers.map((answer, i) => {
+                  return (
+                    <QAWrapper>
+                      <ModalQ>{questions[i]}</ModalQ>
+                      <ModalA>{answer}</ModalA>
+                    </QAWrapper>
+                  );
+                })}
+              </Modal>
+              <Overlay
+                onClick={() => {
+                  setViewIndApp(false);
+                }}
+              ></Overlay>
+            </>
+          ) : (
+            <></>
+          )}
           <Header>
             {/* Need to dynamically fill the name here using state */}
             <HackathonName>{name}</HackathonName>
@@ -198,34 +391,15 @@ export default function ViewApplications() {
             <Wrapper>
               <AppNoWrapper>
                 <AppNoHeader>Total Applications:</AppNoHeader>
-                <AppNoAmount>0</AppNoAmount>
+                <AppNoAmount>{Object.keys(appsRef.current).length}</AppNoAmount>
               </AppNoWrapper>
               <ApplicationGrid>
                 <GridTitles>
                   <GridTitle>Number</GridTitle>
-                  <GridTitle>Name</GridTitle>
+                  <GridTitle>ID</GridTitle>
                   <GridTitle>View Application</GridTitle>
                 </GridTitles>
-                <ApplicationInfoWrapper>
-                  <ApplicationInfo>1</ApplicationInfo>
-                  <ApplicationInfo>Udit Desai</ApplicationInfo>
-                  <SubmitButton>View Application</SubmitButton>
-                </ApplicationInfoWrapper>
-                <ApplicationInfoWrapper>
-                  <ApplicationInfo>1</ApplicationInfo>
-                  <ApplicationInfo>Udit Desai</ApplicationInfo>
-                  <SubmitButton>View Application</SubmitButton>
-                </ApplicationInfoWrapper>
-                <ApplicationInfoWrapper>
-                  <ApplicationInfo>1</ApplicationInfo>
-                  <ApplicationInfo>Udit Desai</ApplicationInfo>
-                  <SubmitButton>View Application</SubmitButton>
-                </ApplicationInfoWrapper>
-                <ApplicationInfoWrapper>
-                  <ApplicationInfo>1</ApplicationInfo>
-                  <ApplicationInfo>Udit Desai</ApplicationInfo>
-                  <SubmitButton>View Application</SubmitButton>
-                </ApplicationInfoWrapper>
+                {appsHTML}
               </ApplicationGrid>
             </Wrapper>
           </ContentContainer>
