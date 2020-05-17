@@ -1,13 +1,41 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+@font-face {
+  font-family: "Inter-Bold";
+  font-style: normal;
+  src: local("Inter-Bold"), local("Inter-Bold"),
+    url("./fonts/Inter-Bold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Inter-Medium";
+  font-style: normal;
+  src: local("Inter-Medium"), local("Inter-Medium"),
+    url("./fonts/Inter-Medium.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Inter-SemiBold";
+  font-style: normal;
+  src: local("Inter-SemiBold"), local("Inter-SemiBold"),
+    url("./fonts/Inter-SemiBold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Inter-Regular";
+  font-style: normal;
+  src: local("Inter-Regular"), local("Inter-Regular"),
+    url("./fonts/Inter-Regular.ttf") format("truetype");
 }
