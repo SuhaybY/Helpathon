@@ -32,22 +32,18 @@ export default function App() {
 }
 
 const routes = [
-  { path: "/applicant/:hackID/apply", component: InsertUser },
+  { path: "/applicant/:hackID/apply", component: InsertUser, exact: false },
   {
     path: "/applicant/:hackID",
     component: ViewApplicantHackathon,
-  },
-  {
-    path: "/hackathon/all",
-    component: AllHackathons,
   },
   {
     path: "/hackathon/:hackID",
     component: HackathonView,
   },
   {
-    path: "/hackathon",
-    component: CreateHackathon,
+    path: "/hackathons",
+    component: AllHackathons,
   },
   {
     path: "/",

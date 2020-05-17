@@ -133,6 +133,7 @@ export default function AllHackathons() {
   };
 
   const hackathonsHTML = hackathons.map((hackathon) => {
+    console.log(hackathon);
     let startDate = new Date(
       hackathon.start.seconds * 1000
     ).toLocaleDateString();

@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { GetUsers } from "./";
 import { Hackathon } from "./index.js";
 import firestore from "./Firestore.js";
+import { Redirect } from "react-router-dom";
 
 import styled from "styled-components";
 
@@ -153,7 +154,9 @@ const FooterMssg = styled.p`
   margin: 0;
 `;
 
-export default function ViewHackathon() {
+export default function ViewHackathon({ history }) {
+  const [loggedIn, setLoggedin] = useState(true);
+
   let { hackID } = useParams();
   const db = firestore.firestore();
   const docRef = db.collection("hackathons");
@@ -166,52 +169,64 @@ export default function ViewHackathon() {
     setBudget(hackathon_data.budget);
   }, []);
 
+  const goBack = () => {
+    history.push("/");
+  };
+
   return (
     <>
-      <Header>
-        {/* Need to dynamically fill the name here using state */}
-        <HackathonName>{name}</HackathonName>
-        <SubmitButton>Logout</SubmitButton>
-      </Header>
-      <ContentContainer>
-        <GeneralWrapper>
-          <BudgetWrapper>
-            <BudgetHeader>Remaining budget:</BudgetHeader>
-            {/* Need to dynamically fill the budget here using state */}
-            <BudgetAmount>${budget}</BudgetAmount>
-          </BudgetWrapper>
-          <SectionWrapper>
-            <Section color="#F0C8FF">
-              <SectionTitle>Budget</SectionTitle>
-              <SubmitButton>Manage budget</SubmitButton>
-            </Section>
-            <Section color="#C98EFF">
-              <SectionTitle>Prizes</SectionTitle>
-              <SubmitButton>Manage prizes</SubmitButton>
-            </Section>
-          </SectionWrapper>
-        </GeneralWrapper>
-        <ApplicationWrapper>
-          <AppNoWrapper>
-            <AppNoHeader>Total applications:</AppNoHeader>
-            <AppNoAmount>0</AppNoAmount>
-          </AppNoWrapper>
-          <SectionWrapper>
-            <Section color="#C9E4BC">
-              <SectionTitle>Application Creation</SectionTitle>
-              <SubmitButton>Create app</SubmitButton>
-            </Section>
-            <Section color="#80BF9B">
-              <SectionTitle>Application Review</SectionTitle>
-              <SubmitButton>Review apps</SubmitButton>
-            </Section>
-          </SectionWrapper>
-        </ApplicationWrapper>
-      </ContentContainer>
-      <Footer>
-        <FooterLogo>Helpathon</FooterLogo>
-        <FooterMssg>Created with ❤️ by fellow hackathon organizers</FooterMssg>
-      </Footer>
+      {loggedIn === true ? (
+        <>
+          <Header>
+            {/* Need to dynamically fill the name here using state */}
+            <HackathonName>{name}</HackathonName>
+            <SubmitButton onClick={goBack}>Logout</SubmitButton>
+          </Header>
+          <ContentContainer>
+            <GeneralWrapper>
+              <BudgetWrapper>
+                <BudgetHeader>Remaining budget:</BudgetHeader>
+                {/* Need to dynamically fill the budget here using state */}
+                <BudgetAmount>${budget}</BudgetAmount>
+              </BudgetWrapper>
+              <SectionWrapper>
+                <Section color="#F0C8FF">
+                  <SectionTitle>Budget</SectionTitle>
+                  <SubmitButton>Manage budget</SubmitButton>
+                </Section>
+                <Section color="#C98EFF">
+                  <SectionTitle>Prizes</SectionTitle>
+                  <SubmitButton>Manage prizes</SubmitButton>
+                </Section>
+              </SectionWrapper>
+            </GeneralWrapper>
+            <ApplicationWrapper>
+              <AppNoWrapper>
+                <AppNoHeader>Total applications:</AppNoHeader>
+                <AppNoAmount>0</AppNoAmount>
+              </AppNoWrapper>
+              <SectionWrapper>
+                <Section color="#C9E4BC">
+                  <SectionTitle>Application Creation</SectionTitle>
+                  <SubmitButton>Create app</SubmitButton>
+                </Section>
+                <Section color="#80BF9B">
+                  <SectionTitle>Application Review</SectionTitle>
+                  <SubmitButton>Review apps</SubmitButton>
+                </Section>
+              </SectionWrapper>
+            </ApplicationWrapper>
+          </ContentContainer>
+          <Footer>
+            <FooterLogo>Helpathon</FooterLogo>
+            <FooterMssg>
+              Created with ❤️ by fellow hackathon organizers
+            </FooterMssg>
+          </Footer>
+        </>
+      ) : (
+        <Redirect to="/" />
+      )}
     </>
   );
 }
