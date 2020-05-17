@@ -22,7 +22,7 @@ export default function HackBudget() {
         const itemObj = await Hackathon.getBudgetItems(hackID);
         // console.log("Items obj:");
         // console.log(itemObj);
-        var items = []
+        var items = [];
         Object.keys(itemObj).forEach(function(key) {
             let nestedData = [key]
             Object.keys(itemObj[key]).forEach(function(key2) {
@@ -70,7 +70,7 @@ export default function HackBudget() {
     }
 
     function setIncrement(sItem, index){
-        setLeft(left => left - sItem[2]); 
+        setLeft(left => left - parseInt(sItem[2])); 
         Hackathon.updateBudget({name: sItem[0], price: sItem[2]}, hackID, 1);
         let sItemsCopy = [...sItems];
         sItemsCopy[index][1] = sItemsCopy[index][1] + 1;
@@ -78,7 +78,7 @@ export default function HackBudget() {
     }
 
     function setDecrement(sItem, index){
-        setLeft(left => left + sItem[2]); 
+        setLeft(left => left + parseInt(sItem[2])); 
         Hackathon.updateBudget({name: sItem[0], price: sItem[2]}, hackID, -1);
         let sItemsCopy = [...sItems];
         sItemsCopy[index][1] = sItemsCopy[index][1] - 1;
