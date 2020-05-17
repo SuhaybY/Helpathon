@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { GetUsers } from "./";
 import { Hackathon } from "./index.js";
@@ -155,14 +155,15 @@ const FooterMssg = styled.p`
 
 export default function ViewHackathon() {
   let { hackID } = useParams();
-
+  const db = firestore.firestore();
+  const docRef = db.collection("hackathons");
   const [name, setName] = useState("");
   const [budget, setBudget] = useState("");
 
-  useEffect(() => {
-    let res = new Hackathon({ id: hackID });
-
-    //need to get name and budget fields and put into name and budget state
+  useEffect(async () => {
+    let hackathon_data = await Hackathon.getHackathonFromId(hackID);
+    setName(hackathon_data.name);
+    setBudget(hackathon_data.budget);
   }, []);
 
   return (
