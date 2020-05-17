@@ -31,6 +31,7 @@ export default class Hackathon {
                 console.log('No such document!');
             } else {
                 let data = doc.data();
+                console.log("Create");
                 this.populateFields(
                     data.email,
                     data.password,
@@ -46,6 +47,23 @@ export default class Hackathon {
         }).catch(err => {
             console.log('Error getting document', err);
         });
+    }
+
+    static async getHackathonFromId(id) {
+        const db = firestore.firestore();
+        const hackathonRef = db.collection('hackathons').doc(id);
+        let ret = await hackathonRef.get().then(doc => {
+            if (!doc.exists) {
+                console.log('No such document!');
+            } else {
+                let data = doc.data();
+                data.id = id;
+                return data;
+            }
+        }).catch(err => {
+            console.log('Error getting document', err);
+        });
+        return ret;
     }
 
     populateFields(email, password, name, start, end, location, budget, applications, prizes) {
