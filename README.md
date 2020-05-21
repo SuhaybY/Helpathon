@@ -1,11 +1,12 @@
 # Helpathon
-Hackathon Planner for the Ryerson University Hackathon
-project
-**Site:https://helpathon.tech/
+Hackathon Planner for the Ryerson University Hackathon project \
+Site: https://helpathon.tech/ \
+Video Demo: https://youtu.be/aoQioS3ElsU \
+Devpost Project: https://devpost.com/software/helpathon-1lcd7y
 
 ## TechStack
-**This Project was created with [techstack list]**
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+**This Project was created with React, HTML+CSS, Google Cloud (Firebase and DialogFlow)** \
+It was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Features
 * Have user registration
@@ -24,8 +25,11 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
   
 
 ## Pictures
-
-
+HomePage             |  Hackathon admin view
+:-------------------------:|:-------------------------:
+![Homepage](./Samples/homepage.jpg?raw=true)  |  ![Hackathon_Admin](./Samples/hackathon_admin.jpg?raw=true)
+View all hackathons | Register for a hackathon (with bot displayed)
+![View_Hackathons](./Samples/view_hackathons.jpg?raw=true) | ![Register_Hackathon](./Samples/register_hackathon.jpg?raw=true)
 
 ## Available Scripts
 
